@@ -2,7 +2,7 @@ import React from 'react';
 
 const About = () => {
   return (
-    <section className="min-h-screen bg-base-100 flex items-center justify-center px-4 py-16">
+    <section className="min-h-screen bg-base-200 flex items-center justify-center px-4 py-16">
       <div className="max-w-5xl w-full space-y-10">
         <div className="text-center space-y-4">
           <h1 className="text-4xl font-bold text-primary">About CySecPlan</h1>

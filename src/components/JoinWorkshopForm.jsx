@@ -2,6 +2,7 @@ import axios from 'axios';
 import { base_url } from '../utils/constants';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { INDIAN_CITIES } from '../utils/constants';
 
 const JoinWorkshopForm = ({ workShopId }) => {
   const navigate = useNavigate();
@@ -36,7 +37,8 @@ const JoinWorkshopForm = ({ workShopId }) => {
       alert('Join Request Created');
       navigate('/participant');
     } catch (err) {
-      alert(err);
+      console.log(err.response.data);
+      alert(err.response.data);
     }
   };
 
@@ -47,14 +49,23 @@ const JoinWorkshopForm = ({ workShopId }) => {
     >
       <div className="mb-3">
         <label className="block font-medium">Origin City</label>
-        <input
-          type="text"
-          name="originCity"
-          value={formData.originCity}
-          onChange={handleChange}
+        <select
+          className="input-md border-2 p-2 border-primary lg:input-lg"
           required
-          className="input input-bordered w-full"
-        />
+          value={formData.originCity}
+          onChange={(e) => {
+            setFormData({ ...formData, originCity: e.target.value });
+          }}
+        >
+          <option value="" disabled>
+            Select a city
+          </option>
+          {INDIAN_CITIES.map((city) => (
+            <option className="bg-primary" key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="mb-3">
@@ -77,7 +88,7 @@ const JoinWorkshopForm = ({ workShopId }) => {
       <div className="mb-3">
         <label className="block font-medium">Preferred Travel Date</label>
         <input
-          type="date"
+          type="datetime-local"
           name="preferredDate"
           value={formData.preferredDate}
           onChange={handleChange}

@@ -55,7 +55,6 @@ const Navbar = () => {
               Login
             </Link>
           </li>
-
           <li>
             <button
               onClick={handleDashboardRedirect}
@@ -73,6 +72,9 @@ const Navbar = () => {
                   <button onClick={handleLogout} className="text-left">
                     Logout
                   </button>
+                </li>
+                <li>
+                  <Link to="/profile">Profile</Link>
                 </li>
                 <li>
                   <Link to="/about">About</Link>

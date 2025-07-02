@@ -3,6 +3,7 @@ import axios from 'axios';
 import { base_url } from '../utils/constants';
 import { useNavigate } from 'react-router';
 import ToAdmin from './navigators/ToAdmin';
+import { INDIAN_CITIES } from '../utils/constants';
 const CreateWorkshop = function () {
   const navigate = useNavigate();
   const [state, setState] = useState({
@@ -31,8 +32,8 @@ const CreateWorkshop = function () {
       alert('Workshop Created Successfully');
       navigate('/admin');
     } catch (err) {
-      alert('Encountered Error Workshop not created');
-      console.log(err.message);
+      alert('Workshop Not Created: ' + err.response.data.message);
+      console.log(err.response.data.message);
     }
   };
   return (
@@ -160,11 +161,9 @@ const CreateWorkshop = function () {
             <legend className="fieldset-legend md:text-lg">
               Physical Workshop City<span className="text-red-500">*</span>
             </legend>
-            <input
-              type="text"
+            <select
               className="input-md border-2 p-2 border-primary lg:input-lg"
               required
-              placeholder="Delhi, Mumbai, Chennai"
               value={state.location.city}
               onChange={(e) => {
                 setState({
@@ -175,7 +174,16 @@ const CreateWorkshop = function () {
                   },
                 });
               }}
-            />
+            >
+              <option value="" disabled>
+                Select a city
+              </option>
+              {INDIAN_CITIES.map((city) => (
+                <option className="bg-primary" key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
             <legend className="fieldset-legend md:text-lg">
               Physical Workshop Address<span className="text-red-500">*</span>
             </legend>

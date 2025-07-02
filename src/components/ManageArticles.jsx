@@ -216,7 +216,8 @@ const ManageArticles = () => {
                 <tr key={article._id}>
                   <td>{article.title}</td>
                   <td>{article.description.slice(0, 50)}...</td>
-                  <td>{article.author?.firstName || 'Unknown'}</td>
+                  <td>{article.author?.firstName || 'Unknown'}</td>{' '}
+                  {/* Corrected author display here */}
                   <td>{new Date(article.createdAt).toLocaleDateString()}</td>
                   <td className="text-center">
                     <button
@@ -329,7 +330,12 @@ const ManageArticles = () => {
               <h3 className="font-bold text-lg">{viewArticle.title}</h3>
               <p className="text-gray-600 mt-2">
                 <span className="font-medium">Author:</span>{' '}
-                {viewArticle.author || 'Unknown'}
+                {viewArticle.author?.firstName || 'Unknown'}{' '}
+                {/* Corrected author access */}
+                {viewArticle.author?.lastName
+                  ? ` ${viewArticle.author.lastName}`
+                  : ''}{' '}
+                {/* Optional: Add last name */}
               </p>
               <p className="text-gray-600">
                 <span className="font-medium">Created:</span>{' '}
@@ -349,7 +355,11 @@ const ManageArticles = () => {
               </div>
               <div className="mt-4">
                 <h4 className="font-medium">Content:</h4>
-                <div className="prose text-gray-600">{viewArticle.content}</div>
+                {/* Assuming content might have HTML, consider using dangerouslySetInnerHTML */}
+                <div
+                  className="prose text-gray-600"
+                  dangerouslySetInnerHTML={{ __html: viewArticle.content }}
+                ></div>
               </div>
               <div className="modal-action">
                 <button

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { base_url } from './../utils/constants';
 import JoinWorkshopForm from './JoinWorkshopForm';
 import { useNavigate } from 'react-router';
+import { dtFormat } from './../utils/constants';
 
 const JoinWorkshop = () => {
   const { id: workshopId } = useParams();
@@ -56,7 +57,7 @@ const JoinWorkshop = () => {
 
   return (
     <div>
-      <div className="card bg-base-200 w-96 shadow-sm mx-auto my-10">
+      <div className="card bg-base-200 w-108 shadow-sm mx-auto my-10">
         <button
           className="btn btn-outline m-4"
           onClick={() => navigate('/participant')}
@@ -79,8 +80,8 @@ const JoinWorkshop = () => {
           )}
           <p>
             <span className="font-semibold">Date:</span>{' '}
-            {new Date(workshopDetails.startDate).toLocaleDateString()} -{' '}
-            {new Date(workshopDetails.endDate).toLocaleDateString()}
+            {dtFormat.format(new Date(workshopDetails.startDate))} -{' '}
+            {dtFormat.format(new Date(workshopDetails.endDate))}
           </p>
           <p>
             <span className="font-semibold">Location:</span>
@@ -94,9 +95,7 @@ const JoinWorkshop = () => {
           </p>
           <p>
             <span className="font-semibold">Registration Deadline:</span>{' '}
-            {new Date(
-              workshopDetails.registrationDeadline
-            ).toLocaleDateString()}
+            {dtFormat.format(new Date(workshopDetails.registrationDeadline))}
           </p>
           <p>
             <span className="font-semibold">Price:</span>{' '}

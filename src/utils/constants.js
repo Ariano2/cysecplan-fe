@@ -4,3 +4,21 @@ export const dtFormat = new Intl.DateTimeFormat('en-IN', {
   timeStyle: 'short',
   timeZone: 'IST',
 });
+
+export const INDIAN_CITIES = [
+  'Delhi',
+  'Mumbai',
+  'Chennai',
+  'Bangalore',
+  'Kolkata',
+  'Hyderabad',
+  'Ahmedabad',
+  'Pune',
+  'Jaipur',
+  'Lucknow',
+  'Kanpur',
+  'Nagpur',
+  'Indore',
+  'Bhopal',
+  'Patna',
+];

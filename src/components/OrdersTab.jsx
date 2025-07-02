@@ -47,7 +47,7 @@ const OrdersTab = ({ orders, products }) => {
               >
                 <div className="card-body">
                   <h3 className="card-title">Order #{order._id}</h3>
-                  <p className="text-gray-600">
+                  <p className="text-secondary-content">
                     <span className="font-medium">Status:</span>{' '}
                     <span
                       className={`badge ${
@@ -59,7 +59,7 @@ const OrdersTab = ({ orders, products }) => {
                       {order.status === 'completed' ? 'Paid' : 'Failed'}
                     </span>
                   </p>
-                  <p className="text-gray-600">
+                  <p className="text-primary-content">
                     <span className="font-medium">Total:</span> ₹
                     {totalPrice.toFixed(2)}
                   </p>
@@ -71,7 +71,7 @@ const OrdersTab = ({ orders, products }) => {
                           (p) => p._id === item.productId
                         );
                         return (
-                          <li key={index} className="text-gray-600">
+                          <li key={index} className="text-primary-content">
                             {product ? product.name : 'Unknown Product'} x{' '}
                             {item.quantity} @ ₹{product ? product.price : 'N/A'}{' '}
                             each

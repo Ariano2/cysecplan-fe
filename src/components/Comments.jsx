@@ -10,7 +10,6 @@ const Comments = ({ articleId }) => {
   const [toast, setToast] = useState({ show: false, message: '', type: '' });
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [userId, setUserId] = useState(null);
   const pageLimit = 10;
 
   const fetchComments = async (page = 1) => {
@@ -30,20 +29,8 @@ const Comments = ({ articleId }) => {
     }
   };
 
-  const fetchUserId = async () => {
-    try {
-      const response = await axios.get(`${base_url}/api/auth/participant`, {
-        withCredentials: true,
-      });
-      setUserId(response.data._id);
-    } catch (err) {
-      console.error('Failed to fetch user ID:', err);
-    }
-  };
-
   useEffect(() => {
     fetchComments(currentPage);
-    fetchUserId();
   }, [articleId, currentPage]);
 
   const handlePostComment = async () => {
@@ -186,7 +173,7 @@ const Comments = ({ articleId }) => {
                   </span>{' '}
                   • {new Date(comment.createdAt).toLocaleDateString()}
                 </p>
-                {userId && comment.author?._id === userId && (
+                {comment.author?._id && (
                   <div>
                     <button
                       className="btn btn-outline btn-sm mr-2"

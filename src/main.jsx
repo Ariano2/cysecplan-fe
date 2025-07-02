@@ -20,6 +20,7 @@ import PendingRequest from './components/PendingRequest.jsx';
 import ViewArticle from './components/ViewArticle.jsx';
 import Cart from './components/Cart.jsx';
 import Contact from './components/Contact.jsx';
+import Profile from './components/Profile.jsx';
 
 createRoot(document.getElementById('root')).render(
   // <StrictMode>
@@ -31,6 +32,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/signup" element={<Register />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
+        <Route path="/profile" element={<Profile />} />
         <Route
           path="/admin"
           element={

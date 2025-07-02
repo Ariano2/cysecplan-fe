@@ -111,15 +111,15 @@ const StoreTab = ({ products, setProducts, onCartUpdate }) => {
               </figure>
               <div className="card-body">
                 <h2 className="card-title">{product.name}</h2>
-                <p className="text-sm text-neutral-content">
+                <p className="text-sm text-primary-content">
                   <span className="font-semibold">Category:</span>{' '}
                   {product.category}
                 </p>
-                <p className="text-sm text-neutral-content">
+                <p className="text-sm text-primary-content">
                   <span className="font-semibold">Price:</span> ₹{' '}
                   {product.price}
                 </p>
-                <p className="text-sm text-neutral-content">
+                <p className="text-sm text-primary-content">
                   <span className="font-semibold">Stock:</span>{' '}
                   {product.stock > 0
                     ? `${product.stock} available`
