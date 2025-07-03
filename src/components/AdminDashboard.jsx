@@ -120,11 +120,11 @@ const AdminDashboard = () => {
           htmlFor="my-drawer-2"
           className="btn btn-primary drawer-button my-4 md:hidden"
         >
-          Open Admin Drawer
+          Open Actions Drawer
         </label>
 
         <h1 className="text-3xl font-bold text-base-content mb-6">
-          Admin Dashboard
+          Controller Dashboard
         </h1>
 
         {/* Analytics Overview */}

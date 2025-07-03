@@ -55,7 +55,7 @@ const Login = () => {
               className="radio"
               defaultChecked
             />
-            <label className="label">Admin</label>
+            <label className="label">Controller</label>
             <input
               type="radio"
               onClick={() => {

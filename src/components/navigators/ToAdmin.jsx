@@ -8,7 +8,7 @@ const ToAdmin = () => {
       }}
       className="btn"
     >
-      Back to Admin Dashboard
+      Back to Controller Dashboard
     </button>
   );
 };
