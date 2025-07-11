@@ -143,8 +143,8 @@ const AdminDashboard = () => {
               value: analytics.totalProducts,
             },
             {
-              title: 'Articles & Reads',
-              value: `${analytics.articleCount} / ${analytics.totalReads}`,
+              title: 'Articles Posted',
+              value: `${analytics.articleCount}`,
             },
           ].map((item, i) => (
             <div

@@ -199,6 +199,7 @@ const ManageProducts = () => {
       setImagePreview('');
       setTimeout(() => setToast({ show: false, message: '', type: '' }), 3000);
     } catch (err) {
+      console.log(err);
       setToast({
         show: true,
         message: err.response?.data || 'Failed to save product.',

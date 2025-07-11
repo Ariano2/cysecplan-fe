@@ -6,6 +6,7 @@ import WorkshopsTab from '../components/WorkshopsTab';
 import StoreTab from '../components/StoreTab';
 import ArticlesTab from '../components/ArticlesTab';
 import OrdersTab from '../components/OrdersTab';
+import JoinRequestsTab from '../components/JoinRequestsTab';
 
 const ParticipantDashboard = () => {
   const [activeTab, setActiveTab] = useState('workshops');
@@ -13,6 +14,7 @@ const ParticipantDashboard = () => {
   const [products, setProducts] = useState([]);
   const [articles, setArticles] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [joinRequests, setJoinRequests] = useState([]);
   const [cartCount, setCartCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -51,6 +53,7 @@ const ParticipantDashboard = () => {
           articlesResponse,
           cartResponse,
           ordersResponse,
+          joinRequestsResponse,
         ] = await Promise.all([
           axios.get(`${base_url}/api/workshop/available`, {
             withCredentials: true,
@@ -61,12 +64,16 @@ const ParticipantDashboard = () => {
           axios.get(`${base_url}/api/articles`, { withCredentials: true }),
           axios.get(`${base_url}/api/cart`, { withCredentials: true }),
           axios.get(`${base_url}/api/orders`, { withCredentials: true }),
+          axios.get(`${base_url}/api/workshop/join/request`, {
+            withCredentials: true,
+          }),
         ]);
 
         setWorkshops(workshopsResponse.data[0]?.data || []);
         setProducts(productsResponse.data || []);
         setArticles(articlesResponse.data?.articles || []);
         setOrders(ordersResponse.data || []);
+        setJoinRequests(joinRequestsResponse.data?.requestStatus || []);
         const count =
           cartResponse.data?.items?.reduce(
             (acc, item) => acc + item.quantity,
@@ -146,6 +153,16 @@ const ParticipantDashboard = () => {
           >
             Orders
           </button>
+          <button
+            className={`px-4 py-2 ${
+              activeTab === 'joinRequest'
+                ? 'border-b-2 border-blue-500 font-semibold'
+                : ''
+            }`}
+            onClick={() => setActiveTab('joinRequest')}
+          >
+            Workshop Requests
+          </button>
         </div>
         <div>
           <button
@@ -184,6 +201,9 @@ const ParticipantDashboard = () => {
       )}
       {activeTab === 'orders' && (
         <OrdersTab orders={orders} products={products} />
+      )}
+      {activeTab === 'joinRequest' && (
+        <JoinRequestsTab joinRequests={joinRequests} />
       )}
     </div>
   );

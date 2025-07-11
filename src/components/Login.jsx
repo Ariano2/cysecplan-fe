@@ -5,6 +5,12 @@ import { useNavigate } from 'react-router';
 
 const Login = () => {
   const navigate = useNavigate();
+  const [emailId, setEmailId] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
+  const [isParticipant, setIsParticipant] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+
   const HandleLogin = async () => {
     try {
       const api = isParticipant ? '/api/participant/login' : '/api/admin/login';
@@ -27,13 +33,15 @@ const Login = () => {
       setError(err.response.data.message);
     }
   };
+
   const ToSignUp = () => {
     navigate('/signup');
   };
-  const [emailId, setEmailId] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
-  const [isParticipant, setIsParticipant] = useState(true);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="flex justify-center items-center h-full">
       <div>
@@ -45,7 +53,7 @@ const Login = () => {
           className="mx-auto fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4"
         >
           <div className="my-2 lg:my-4 flex justify-between">
-            <label className="label">Participant</label>
+            <label className="label">User</label>
             <input
               type="radio"
               onClick={() => {
@@ -78,16 +86,25 @@ const Login = () => {
           />
 
           <label className="label">Password</label>
-          <input
-            type="password"
-            value={password}
-            className="input"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            placeholder="Password"
-            required
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              className="input w-full pr-16"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              placeholder="Password"
+              required
+            />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute z-10 right-2 top-1/2 transform -translate-y-1/2 text-sm text-base-content opacity-70 hover:opacity-100"
+            >
+              {showPassword ? 'Hide' : 'Show'}
+            </button>
+          </div>
           {error && <p className="text-error">{error}</p>}
           <button
             onClick={() => {
@@ -109,4 +126,5 @@ const Login = () => {
     </div>
   );
 };
+
 export default Login;

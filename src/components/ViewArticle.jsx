@@ -10,10 +10,11 @@ const ViewArticle = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [likeStatus, setLikeStatus] = useState('');
-  const [likedOnce, setLikedOnce] = useState(false);
+  const [hasLiked, setHasLiked] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
-  const fetchArticleDetails = async (articleId) => {
+  const fetchArticleDetails = async () => {
     try {
       const response = await axios.get(
         `${base_url}/api/articles/${articleId}`,
@@ -21,21 +22,42 @@ const ViewArticle = () => {
           withCredentials: true,
         }
       );
-      setArticle(response.data);
+
+      const articleData = response.data;
+      console.log('Article data:', articleData); // Debug log to verify isLiked
+      setArticle(articleData);
+      setHasLiked(articleData.isLiked || false); // Set based on backend's isLiked
+      setIsAuthenticated(
+        !!articleData.isLiked || articleData.isLiked === false
+      ); // If isLiked is present, user is likely authenticated
       setLoading(false);
     } catch (err) {
-      setError(err.response?.data || err.message);
+      console.error('Fetch error:', err.response?.data || err.message); // Debug log
+      if (err.response?.status === 401) {
+        setError('Please log in to view article details.');
+        setIsAuthenticated(false);
+      } else {
+        setError(err.response?.data || 'Failed to load article.');
+      }
+      setHasLiked(false);
       setLoading(false);
     }
   };
 
-  const handleLike = async () => {
+  const handleLikeToggle = async () => {
+    if (!isAuthenticated || !article) {
+      setLikeStatus('Please log in to like/unlike articles.');
+      return;
+    }
+
     try {
       const response = await axios.post(
         `${base_url}/api/articles/${articleId}/like`,
         {},
         { withCredentials: true }
       );
+
+      console.log('Like response:', response.data); // Debug log
       setArticle((prev) => ({
         ...prev,
         activity: {
@@ -43,16 +65,22 @@ const ViewArticle = () => {
           total_likes: response.data.total_likes,
         },
       }));
-      setLikeStatus('Article liked successfully!');
-      setLikedOnce(true);
+
+      setHasLiked(response.data.isLiked);
+      setLikeStatus(response.data.message);
     } catch (err) {
-      setLikeStatus(err.response?.data || 'Failed to like article.');
+      console.error('Like error:', err.response?.data || err.message); // Debug log
+      setLikeStatus(
+        err.response?.status === 401
+          ? 'Please log in to like/unlike articles.'
+          : err.response?.data || 'Action failed.'
+      );
     }
   };
 
   useEffect(() => {
     if (articleId) {
-      fetchArticleDetails(articleId);
+      fetchArticleDetails();
     }
   }, [articleId]);
 
@@ -115,18 +143,24 @@ const ViewArticle = () => {
             <p>{article.content}</p>
           </div>
           <button
-            className="btn btn-primary w-full max-w-xs"
-            onClick={handleLike}
-            disabled={likedOnce}
+            className={`btn w-full max-w-xs ${
+              hasLiked
+                ? 'btn-error text-error-content'
+                : 'btn-primary text-primary-content'
+            } ${!isAuthenticated ? 'btn-disabled' : ''}`}
+            onClick={handleLikeToggle}
+            disabled={!isAuthenticated}
           >
-            Like ❤️
+            {hasLiked ? 'Unlike 👎' : 'Like ❤️'}
           </button>
           {likeStatus && (
             <p
               className={`mt-2 text-sm ${
-                likeStatus.includes('successfully')
-                  ? 'text-green-500'
-                  : 'text-red-500'
+                likeStatus.includes('liked')
+                  ? 'text-primary-content'
+                  : likeStatus.includes('unliked')
+                  ? 'text-yellow-500'
+                  : 'text-error-content'
               }`}
             >
               {likeStatus}

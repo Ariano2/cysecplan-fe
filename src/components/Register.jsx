@@ -7,19 +7,21 @@ const Register = () => {
   const navigate = useNavigate();
   const [emailId, setEmailId] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [error, setError] = useState('');
   const [isParticipant, setIsParticipant] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+
   const HandleSignUp = async () => {
-    // axios.post call to signup api
     try {
       const api = isParticipant
         ? '/api/participant/register'
         : '/api/admin/register';
       await axios.post(
         base_url + api,
-        { firstName, lastName, emailId, password },
+        { firstName, lastName, emailId, password, confirmPassword },
         { withCredentials: true }
       );
       if (isParticipant) {
@@ -30,12 +32,18 @@ const Register = () => {
         navigate('/admin');
       }
     } catch (err) {
-      setError(err.response.data);
+      setError(err.response?.data || 'Registration failed');
     }
   };
+
   const ToLogin = () => {
     navigate('/login');
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="my-2 lg:my-10">
       <h1 className="text-center lg:text-lg font-bold my-2">REGISTER</h1>
@@ -46,7 +54,7 @@ const Register = () => {
         className="mx-auto fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4"
       >
         <div className="my-2 lg:my-4 flex justify-between">
-          <label className="label">Participant</label>
+          <label className="label">User</label>
           <input
             type="radio"
             onClick={() => {
@@ -103,16 +111,47 @@ const Register = () => {
         />
 
         <label className="label">Password</label>
-        <input
-          type="password"
-          value={password}
-          className="input"
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          placeholder="Set Password"
-          required
-        />
+        <div className="relative">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            className="input w-full pr-16"
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            placeholder="Set Password"
+            required
+          />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="absolute z-10 right-2 top-1/2 transform -translate-y-1/2 text-sm text-base-content opacity-70 hover:opacity-100"
+          >
+            {showPassword ? 'Hide' : 'Show'}
+          </button>
+        </div>
+
+        <label className="label">Confirm Password</label>
+        <div className="relative">
+          <input
+            type={showPassword ? 'text' : 'password'}
+            value={confirmPassword}
+            className="input w-full pr-16"
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+            }}
+            placeholder="Confirm Password"
+            required
+          />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="absolute z-10 right-2 top-1/2 transform -translate-y-1/2 text-sm text-base-content opacity-70 hover:opacity-100"
+          >
+            {showPassword ? 'Hide' : 'Show'}
+          </button>
+        </div>
+
         {error && <p className="text-error">{error}</p>}
         <button
           onClick={() => {
@@ -125,9 +164,9 @@ const Register = () => {
         </button>
         <p
           onClick={ToLogin}
-          className="text-center text-md my-4 text-primary-content hover:text-secondary-content"
+          className="text-center text-md my-4 text-primary-content hover:text-secondary-content cursor-pointer"
         >
-          Already a User ? Login
+          Already a User? Login
         </p>
       </form>
     </div>
