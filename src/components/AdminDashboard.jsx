@@ -282,7 +282,7 @@ const AdminDashboard = () => {
               to: '/create/workshop',
             },
             {
-              text: 'Manage Join Requests',
+              text: 'Manage Workshops',
               to: '/manage/workshops',
             },
             {
